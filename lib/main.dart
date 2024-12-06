@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ApiCallSecond(),
+      home: const AppProvider(),
     );
   }
 }
@@ -263,6 +263,56 @@ class _ApiCallSecondState extends State<ApiCallSecond> {
     );
   }
 }
+
+class ProviderName with ChangeNotifier{
+
+  int _counter = 0;
+  int get counter => _counter;
+
+  void increment(){
+    _counter++;
+    notifyListeners();
+  }
+}
+
+
+class AppProvider extends StatelessWidget {
+  const AppProvider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(create: (_) => ProviderName(),
+    child: MaterialApp(
+      home: ProviderScreenApp(),
+    ),
+    );
+  }
+}
+
+class ProviderScreenApp extends StatelessWidget {
+  const ProviderScreenApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final providerName  = Provider.of<ProviderName>(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Provider"),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+
+            Text("Counter:  ${providerName.counter}")
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(onPressed: providerName.increment ,
+      child: Icon(Icons.add),),
+    );
+  }
+}
+
 
 
 
